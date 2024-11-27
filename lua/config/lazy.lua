@@ -44,35 +44,101 @@ require("lazy").setup({
         "CRAG666/code_runner.nvim",
         config = true
     }, {
-        'smoka7/hop.nvim',
+        "smoka7/hop.nvim",
         version = "*",
         opts = {
-            keys = 'etovxqpdygfblzhckisuran'
+            keys = "etovxqpdygfblzhckisuran"
         }
     }, {
-        'akinsho/toggleterm.nvim',
-        config = function()
-            require('toggleterm').setup {
-                size = 20,
-                open_mapping = [[<c-\>]],
-                direction = 'float',
-                float_opts = {
-                    border = 'curved'
+        'lukas-reineke/indent-blankline.nvim',
+        tag = 'v3.8.2',
+        enabled = true,
+        main = 'ibl',
+        opts = {},
+        dependencies = {{
+            'HiPhish/rainbow-delimiters.nvim',
+            lazy = true
+        }},
+
+        config = function(_)
+            local highlight = {'RainbowRed', 'RainbowYellow', 'RainbowBlue', 'RainbowOrange', 'RainbowGreen',
+                               'RainbowViolet', 'RainbowCyan', 'CursorColumn', 'WhiteSpace'}
+            local hooks = require 'ibl.hooks'
+            hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+                vim.api.nvim_set_hl(0, 'RainbowRed', {
+                    fg = '#E06C75'
+                })
+                vim.api.nvim_set_hl(0, 'RainbowYellow', {
+                    fg = '#E5C07B'
+                })
+                vim.api.nvim_set_hl(0, 'RainbowBlue', {
+                    fg = '#61AFEF'
+                })
+                vim.api.nvim_set_hl(0, 'RainbowOrange', {
+                    fg = '#D19A66'
+                })
+                vim.api.nvim_set_hl(0, 'RainbowGreen', {
+                    fg = '#98C379'
+                })
+                vim.api.nvim_set_hl(0, 'RainbowViolet', {
+                    fg = '#C678DD'
+                })
+                vim.api.nvim_set_hl(0, 'RainbowCyan', {
+                    fg = '#56B6C2'
+                })
+            end)
+
+            vim.g.rainbow_delimiters = {
+                highlight = highlight
+            }
+
+            require('ibl').setup {
+                indent = {
+                    highlight = highlight,
+                    char = '┊',
+                    tab_char = '|'
+                },
+                scope = {
+                    enabled = true,
+                    show_start = false,
+                    show_end = false,
+                    highlight = highlight
+                },
+                whitespace = {
+                    remove_blankline_trail = false
+                },
+                exclude = {
+                    filetypes = {'NvimTree', 'Trouble', 'dashboard', 'git', 'help', 'markdown', 'notify', 'packer',
+                                 'sagahover', 'terminal', 'undotree'},
+                    buftypes = {'terminal', 'nofile', 'prompt', 'quickfix'}
                 }
             }
+
+        end
+    }, {
+        "akinsho/toggleterm.nvim",
+        config = function()
+            require("toggleterm").setup({
+                size = 20,
+                open_mapping = [[<c-\>]],
+                direction = "float",
+                float_opts = {
+                    border = "curved"
+                }
+            })
 
             function _G.set_terminal_keymaps()
                 local opts = {
                     buffer = 0
                 }
-                vim.keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
+                vim.keymap.set("t", "jk", [[<C-\><C-n>]], opts)
             end
 
             -- if you only want these mappings for toggle term use term://*toggleterm#* instead
-            vim.cmd 'autocmd! TermOpen term://* lua set_terminal_keymaps()'
+            vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
         end,
         keys = [[<c-\>]],
-        cmd = 'ToggleTerm'
+        cmd = "ToggleTerm"
     }, {
         import = "plugins"
     }},
@@ -103,7 +169,7 @@ require("lazy").setup({
     }
 })
 
-require('code_runner').setup({
+require("code_runner").setup({
     focus = false,
     better_term = "clean",
     filetype = {
@@ -124,4 +190,14 @@ require('code_runner').setup({
             end)
         end
     }
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "go", -- 只针对 Go 文件生效
+    callback = function()
+        vim.opt.tabstop = 4 -- 设置 Tab 长度为 4
+        vim.opt.shiftwidth = 4 -- 设置缩进时每个层级为 4 个空格
+        vim.opt.softtabstop = 4 -- 在插入模式下，Tab 和退格行为为 4 个空格
+        vim.opt.expandtab = true -- 使用空格代替 Tab
+    end
 })
