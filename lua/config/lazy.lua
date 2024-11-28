@@ -50,41 +50,41 @@ require("lazy").setup({
             keys = "etovxqpdygfblzhckisuran"
         }
     }, {
-        'lukas-reineke/indent-blankline.nvim',
-        tag = 'v3.8.2',
+        "lukas-reineke/indent-blankline.nvim",
+        tag = "v3.8.2",
         enabled = true,
-        main = 'ibl',
+        main = "ibl",
         opts = {},
         dependencies = {{
-            'HiPhish/rainbow-delimiters.nvim',
+            "HiPhish/rainbow-delimiters.nvim",
             lazy = true
         }},
 
         config = function(_)
-            local highlight = {'RainbowRed', 'RainbowYellow', 'RainbowBlue', 'RainbowOrange', 'RainbowGreen',
-                               'RainbowViolet', 'RainbowCyan', 'CursorColumn', 'WhiteSpace'}
-            local hooks = require 'ibl.hooks'
+            local highlight = {"RainbowRed", "RainbowYellow", "RainbowBlue", "RainbowOrange", "RainbowGreen",
+                               "RainbowViolet", "RainbowCyan", "CursorColumn", "WhiteSpace"}
+            local hooks = require("ibl.hooks")
             hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-                vim.api.nvim_set_hl(0, 'RainbowRed', {
-                    fg = '#E06C75'
+                vim.api.nvim_set_hl(0, "RainbowRed", {
+                    fg = "#E06C75"
                 })
-                vim.api.nvim_set_hl(0, 'RainbowYellow', {
-                    fg = '#E5C07B'
+                vim.api.nvim_set_hl(0, "RainbowYellow", {
+                    fg = "#E5C07B"
                 })
-                vim.api.nvim_set_hl(0, 'RainbowBlue', {
-                    fg = '#61AFEF'
+                vim.api.nvim_set_hl(0, "RainbowBlue", {
+                    fg = "#61AFEF"
                 })
-                vim.api.nvim_set_hl(0, 'RainbowOrange', {
-                    fg = '#D19A66'
+                vim.api.nvim_set_hl(0, "RainbowOrange", {
+                    fg = "#D19A66"
                 })
-                vim.api.nvim_set_hl(0, 'RainbowGreen', {
-                    fg = '#98C379'
+                vim.api.nvim_set_hl(0, "RainbowGreen", {
+                    fg = "#98C379"
                 })
-                vim.api.nvim_set_hl(0, 'RainbowViolet', {
-                    fg = '#C678DD'
+                vim.api.nvim_set_hl(0, "RainbowViolet", {
+                    fg = "#C678DD"
                 })
-                vim.api.nvim_set_hl(0, 'RainbowCyan', {
-                    fg = '#56B6C2'
+                vim.api.nvim_set_hl(0, "RainbowCyan", {
+                    fg = "#56B6C2"
                 })
             end)
 
@@ -92,11 +92,11 @@ require("lazy").setup({
                 highlight = highlight
             }
 
-            require('ibl').setup {
+            require("ibl").setup({
                 indent = {
                     highlight = highlight,
-                    char = '┊',
-                    tab_char = '|'
+                    char = "┊",
+                    tab_char = "|"
                 },
                 scope = {
                     enabled = true,
@@ -108,12 +108,11 @@ require("lazy").setup({
                     remove_blankline_trail = false
                 },
                 exclude = {
-                    filetypes = {'NvimTree', 'Trouble', 'dashboard', 'git', 'help', 'markdown', 'notify', 'packer',
-                                 'sagahover', 'terminal', 'undotree'},
-                    buftypes = {'terminal', 'nofile', 'prompt', 'quickfix'}
+                    filetypes = {"NvimTree", "Trouble", "dashboard", "git", "help", "markdown", "notify", "packer",
+                                 "sagahover", "terminal", "undotree"},
+                    buftypes = {"terminal", "nofile", "prompt", "quickfix"}
                 }
-            }
-
+            })
         end
     }, {
         "akinsho/toggleterm.nvim",
@@ -192,12 +191,3 @@ require("code_runner").setup({
     }
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "go", -- 只针对 Go 文件生效
-    callback = function()
-        vim.opt.tabstop = 4 -- 设置 Tab 长度为 4
-        vim.opt.shiftwidth = 4 -- 设置缩进时每个层级为 4 个空格
-        vim.opt.softtabstop = 4 -- 在插入模式下，Tab 和退格行为为 4 个空格
-        vim.opt.expandtab = true -- 使用空格代替 Tab
-    end
-})
